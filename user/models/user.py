@@ -7,7 +7,7 @@ class User(AbstractUser):
     # max length could take, unique does not take duplicate valuie, null = cannot be empty
     email = models.EmailField(max_length=50, unique=True, null=False)
     first_name = models.CharField(max_length=50, null=False)
-    contact_number = models.CharField(null=False)
+    contact_number = models.CharField(max_length=50, null=False)
     otp_verify = models.BooleanField(default=False)
     username = models.CharField(max_length=50, unique=True, null=False)
     REQUIRED_FIELDS = ["first_name","contact_number"]
