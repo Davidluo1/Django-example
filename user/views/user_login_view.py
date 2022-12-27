@@ -5,10 +5,11 @@ from user.models import User
 from user.serializer.user_login_request import LoginRequest
 import random
 from rest_framework.authtoken.models import Token
+from django.db import transaction
 
 class UserLoginView(APIView):
     """User SignUp View class"""
-    
+    @transaction.atomic
     def post(self,request):
         req_data = request.data
         request_data = LoginRequest(data=req_data)

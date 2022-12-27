@@ -3,11 +3,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from user.serializer.user_deactivate_request import UserDeactivateRequest
 from user.models import User, UserOtp
+from django.db import transaction
 
 
 class UserDeactivateView(APIView):
     """User deactivate view"""
-    
+    @transaction.atomic
     def post(self, request):
         req_data = request.data
         request_data = UserDeactivateRequest(data=req_data)

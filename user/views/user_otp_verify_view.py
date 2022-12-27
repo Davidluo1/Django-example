@@ -3,12 +3,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from user.models import User, UserOtp
 from user.serializer.user_verify_request import OtpVerifyRequest
-
+from django.db import transaction
 
 
 class User_OtpVerifyView(APIView):
     """Opt verify for user"""
-    
+    @transaction.atomic
     def post(self,request):
         req_data = request.data
         request_data = OtpVerifyRequest(data=req_data)
