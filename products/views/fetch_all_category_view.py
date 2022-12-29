@@ -18,13 +18,14 @@ class FetchAllCategoriesView(APIView):
         # user input page number, default as page 1
         page = request.GET.get("p", 1)
         # user input total size of the category, default as 10
-        psz = request.GET.get("psz", 10)
+        page_size = request.GET.get("psz", 10)
+        # actual data of paginated form 
+        paginator_object = Paginator(category_qs, page_size)
         # get total context of data, count, total_page_number
         object_list = paginator_object.page(page) 
-        # actual data of paginated form
-        paginator_object = Paginator(category_qs, psz) 
+        # actual data of paginated form 
         # import pdb; pdb.set_trace()
-        page_info = {"count" : paginator_object.count, "total_pages" : paginator_object.num_pages, "cur_page" : page}
+        page_info = {"total_items" : paginator_object.count, "total_pages" : paginator_object.num_pages, "cur_page" : page}
         # has_next check next avaliable
         if object_list.has_next():
             page_info["next"] = object_list.next_page_number()
