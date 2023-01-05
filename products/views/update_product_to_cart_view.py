@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from products.models import  Products, UserCart
 from rest_framework.permissions import IsAuthenticated
 from django.db import transaction
+from utils.error_msg import ACCESS_DENIED_MGS, CART_ITEM_UPDATED, DELETE_ITEM_MSG
 
 
 class UpdateProductToCartView(APIView):
@@ -36,7 +37,9 @@ class UpdateProductToCartView(APIView):
             if cart_qs.exists():
                 quantity = request.GET.get('q',None)
                 cart_qs.update(quantity = quantity)
-            return Response({"msg" : "Updated product"}, status = 200)
+                return Response(CART_ITEM_UPDATED, status = 200)
+            else:
+                return Response(ACCESS_DENIED_MGS, status = 400)
         else:
             return Response({"msg" : "Invalid product"}, status = 400)
         
@@ -49,6 +52,8 @@ class UpdateProductToCartView(APIView):
             # check if product exist in cart
             if cart_qs.exists():
                 cart_qs.delete()
-            return Response({"msg" : "Deleted product"}, status = 200)
+                return Response(DELETE_ITEM_MSG, status = 200)
+            else:
+                return Response(ACCESS_DENIED_MGS, status = 400)
         else:
             return Response({"msg" : "Invalid product"}, status = 400)

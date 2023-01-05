@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Application definition
 
@@ -41,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'products',
+    'order',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +137,11 @@ REST_FRAMEWORK = {
    ),
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
 }
+
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+ENDPOINT_URL = os.getenv("ENDPOINT_URL")
+BUCKET_NAME = os.getenv("BUCKET_NAME")
+FILE_URL= os.getenv("FILE_URL")
+
+print(ENDPOINT_URL)
