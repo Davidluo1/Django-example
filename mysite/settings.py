@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'products',
     'order',
+    'player',
 ]
 
 MIDDLEWARE = [
@@ -144,4 +145,8 @@ ENDPOINT_URL = os.getenv("ENDPOINT_URL")
 BUCKET_NAME = os.getenv("BUCKET_NAME")
 FILE_URL= os.getenv("FILE_URL")
 
-print(ENDPOINT_URL)
+PLAYER_AWS_ACCESS_KEY_ID = os.getenv("PLAYER_AWS_ACCESS_KEY_ID")
+PLAYER_AWS_SECRET_ACCESS_KEY = os.getenv("PLAYER_AWS_SECRET_ACCESS_KEY")
+PLAYER_ENDPOINT_URL = os.getenv("PLAYER_ENDPOINT_URL")
+PLAYER_BUCKET_NAME = os.getenv("PLAYER_BUCKET_NAME")
+PLAYER_FILE_URL = os.getenv("PLAYER_FILE_URL")
