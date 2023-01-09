@@ -3,9 +3,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from django.db import transaction
-import boto3
-from datetime import datetime
-from django.conf import settings
 from player.serializer import CountryRequest
 from player.models import Country
 

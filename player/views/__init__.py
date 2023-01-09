@@ -6,3 +6,7 @@ from player.views.update_player_view import UpdatePlayer
 from player.views.fetch_a_player_view import GetPlayer
 from player.views.add_country_image_view import AddCountryImage
 from player.views.add_player_image_view import AddPlayerImage
+from player.views.add_match_view import AddMatch
+from player.views.update_match_view import UpdateMatch
+from player.views.fetch_a_match_view import GetMatch
+from player.views.add_match_player import AddMatchPlayer

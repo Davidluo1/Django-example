@@ -13,26 +13,29 @@ class AddPlayerImage(APIView):
     permission_classes = [(IsAuthenticated)]
 
     @transaction.atomic
-    def put(self, request, country_id):
+    def put(self, request, country_id, player_id):
         user = request.user
         request_file = request.FILES.get("image", None)
+        # player_qs = Player.objects.filter(country_id=country_id, id=player_id)
+        # if player_qs[0].image:
+        #     request_file = player_qs[0].image
         now= datetime.now()
         time = now.strftime("%H:%M:%S")
         time = time.replace(":", "")
-        image_file_check = ['png','jpeg','gif', 'svg']
+        image_file_check = ['png','jpg','gif','svg']
+        file_name = time + "/" + request_file.name
         if file_name.split('.')[-1].lower() not in image_file_check:
             return Response({"msg" : "Incorrect image file format."})
-        file_name = time + "/" + request_file.name
         if request_file:
-            if Player.objects.filter(id = country_id).exists():
-                s3 = boto3.resource('s3', aws_access_key_id = settings.AWS_ACCESS_KEY_ID,
-                    aws_secret_access_key= settings.AWS_SECRET_ACCESS_KEY,
-                    endpoint_url = settings.ENDPOINT_URL)
-                bucket = s3.Bucket(settings.BUCKET_NAME)
+            if Player.objects.filter(country_id=country_id, id = player_id).exists():
+                s3 = boto3.resource('s3', aws_access_key_id = settings.PLAYER_AWS_ACCESS_KEY_ID,
+                    aws_secret_access_key= settings.PLAYER_AWS_SECRET_ACCESS_KEY,
+                    endpoint_url = settings.PLAYER_ENDPOINT_URL)
+                bucket = s3.Bucket(settings.PLAYER_BUCKET_NAME)
                 bucket.put_object(Key=file_name, Body = request_file)
 
-                file_url = settings.FILE_URL + file_name
-                Player.objects.filter(id = country_id).update(image = file_url)
+                file_url = settings.PLAYER_FILE_URL + file_name
+                Player.objects.filter(country_id=country_id, id = player_id).update(image = file_url)
                 return Response({"msg" : "Image updated"}, status = 200)
             else:
                 return Response({"msg" : "Invalid product"}, status = 400)

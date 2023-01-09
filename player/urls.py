@@ -1,5 +1,6 @@
 from django.urls import path
-from player.views import AddCountry, UpdateCountry, GetCountry, AddPlayer, UpdatePlayer, GetPlayer
+from player.views import (AddCountry, UpdateCountry, GetCountry, AddPlayer, UpdatePlayer, GetPlayer, 
+                          AddPlayerImage, AddCountryImage, AddMatch, UpdateMatch, GetMatch, AddMatchPlayer)
 
 urlpatterns = [
     path('country', AddCountry.as_view()),
@@ -8,8 +9,12 @@ urlpatterns = [
     path('team/country/<int:country_id>', GetCountry.as_view()),
     path('team/country/<int:country_id>/players/<int:player_id>', UpdatePlayer.as_view()),
     path('team/country/<int:country_id>/player/<int:player_id>', GetPlayer.as_view()),
-    # path('team/country/<int:country_id>/players/<int:player_id>', GetCountry.as_view()),
-    # path('team/country/<int:country_id>/players/<int:player_id>', GetCountry.as_view()),
+    path('team/country/<int:country_id>/players/<int:player_id>/image', AddPlayerImage.as_view()),
+    path('team/country/<int:country_id>/image', AddCountryImage.as_view()),
+    path('match/<int:country_id_one>/<int:country_id_two>', AddMatch.as_view()),
+    path('match/update/<int:match_id>', UpdateMatch.as_view()),
+    path('match/<int:match_id>', GetMatch.as_view()),
+    path('match/<int:match_id>/team/<int:match_teams_id>/player', AddMatchPlayer.as_view()),
 ]
 
 
