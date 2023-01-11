@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db import transaction
 from player.serializer import PlayerRequest
 from player.models import Player
+from utils.file_data_check import PlayerInDatabaseValidCheck
 
 class AddPlayer(APIView):
     """Add player"""
@@ -17,10 +18,12 @@ class AddPlayer(APIView):
         request_data = PlayerRequest(data = req_data)
         _ = request_data.is_valid(raise_exception = True)
         req_data = request_data.validated_data
+        # check is this player already in the database
         if Player.objects.filter(country_id=country_id, name=req_data['name'], dob=req_data['dob'], 
                                           height=req_data['height'], weight=req_data['weight'], 
                                           image=req_data['image']).exists():
             return Response({"msg" : "Player already exist"}, status=400) 
+        # add the player
         Player.objects.create(country_id=country_id, name=req_data['name'], 
                                           dob=req_data['dob'], status=req_data['status'], 
                                           height=req_data['height'], weight=req_data['weight'], 
@@ -33,8 +36,12 @@ class AddPlayer(APIView):
     def get(self, request, country_id):
         """Get all player data"""
         user = request.user
+        # check is the player exist and not deleted
+        # player_qs = PlayerInDatabaseValidCheck(country_id)
         player_qs = Player.objects.filter(country_id=country_id, is_deleted=False)
+        # player data 
         resp=[]
+        # total number of players
         total=0
         if player_qs:
             for player in player_qs:

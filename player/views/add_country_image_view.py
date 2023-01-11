@@ -15,10 +15,13 @@ class AddCountryImage(APIView):
     @transaction.atomic
     def put(self, request, country_id):
         user = request.user
+        # fetch flag image file from request
         request_file = request.FILES.get("flag", None)
+        # get current time
         now= datetime.now()
         time = now.strftime("%H:%M:%S")
         time = time.replace(":", "")
+        # image file check
         flag_file_check = ['png','jpg','gif', 'svg']
         file_name = time + "/" + request_file.name
         if file_name.split('.')[-1].lower() not in flag_file_check:

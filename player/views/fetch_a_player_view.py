@@ -15,8 +15,7 @@ class GetPlayer(APIView):
         player_qs = Player.objects.filter(country_id=country_id, id=player_id, is_deleted=False)
         if player_qs.exists():
             resp=[]
-            for player in player_qs:
-                resp.append({"id":player.id, "name":player.name, "dob":player.dob,
-                             "status":player.status, "height":player.height, "weight":player.weight})
+            resp.append({"id":player_qs[0].id, "name":player_qs[0].name, "dob":player_qs[0].dob,
+                             "status":player_qs[0].status, "height":player_qs[0].height, "weight":player_qs[0].weight})
             return Response({"Data" : resp}, status=status.HTTP_200_OK) 
         return Response({"msg" : "Country added"}, status=400) 

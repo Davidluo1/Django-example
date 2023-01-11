@@ -27,15 +27,15 @@ class AddPlayerImage(APIView):
         if file_name.split('.')[-1].lower() not in image_file_check:
             return Response({"msg" : "Incorrect image file format."})
         if request_file:
-            if Player.objects.filter(country_id=country_id, id = player_id).exists():
+            if Player.objects.filter(country_id=country_id, id=player_id).exists():
                 s3 = boto3.resource('s3', aws_access_key_id = settings.PLAYER_AWS_ACCESS_KEY_ID,
                     aws_secret_access_key= settings.PLAYER_AWS_SECRET_ACCESS_KEY,
                     endpoint_url = settings.PLAYER_ENDPOINT_URL)
                 bucket = s3.Bucket(settings.PLAYER_BUCKET_NAME)
-                bucket.put_object(Key=file_name, Body = request_file)
+                bucket.put_object(Key=file_name, Body=request_file)
 
                 file_url = settings.PLAYER_FILE_URL + file_name
-                Player.objects.filter(country_id=country_id, id = player_id).update(image = file_url)
+                Player.objects.filter(country_id=country_id, id=player_id).update(image = file_url)
                 return Response({"msg" : "Image updated"}, status = 200)
             else:
                 return Response({"msg" : "Invalid product"}, status = 400)

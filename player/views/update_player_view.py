@@ -19,7 +19,7 @@ class UpdatePlayer(APIView):
         request_data = PlayerRequest(data = req_data)
         _ = request_data.is_valid(raise_exception = True)
         req_data = request_data.validated_data
-        player_qs = Player.objects.filter(country_id=country_id, id=player_id)
+        player_qs = Player.objects.filter(country_id=country_id, id=player_id, is_deleted=False)
         if player_qs.exists():
             player_qs.update(id=country_id, name=req_data['name'], 
                                           dob=req_data['dob'], status=req_data['status'], 

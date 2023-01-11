@@ -21,12 +21,16 @@ class AddMatch(APIView):
         req_data = request_data.validated_data
         team_white = Player.objects.filter(country_id=country_id_one)
         team_black = Player.objects.filter(country_id=country_id_two)
+        # get current time
         now= datetime.now()
         time = now.strftime("%H:%M:%S")
         time = time.replace(":", "")
+        # Check is the match already exist in the database
         if Match.objects.filter(match_date=time,venue=req_data['venue']).exists():
             return Response({"msg" : "Player added"}, status=400) 
-        Match.objects.create(match_date=time,venue=req_data['venue'])
+        # create the match 
+        Match.objects.create(match_date=time,venue=req_data['venue'], team_one_id=country_id_one, 
+                             team_two_id=country_id_two)
         return Response({"msg" : "Player added"}, status=status.HTTP_200_OK) 
         
         
@@ -39,10 +43,13 @@ class AddMatch(APIView):
         date_search = request.GET.get('date', None)
         # find the category object that is not deleted in the database
         match_qs = Match.objects.filter(is_deleted = False)
+        # match venue filter
         if venue_search:
             match_qs = Match.objects.filter(venue=venue_search)
+        # match team filter
         if team_search:
             match_qs = Match.objects.filter(venue=team_search)
+        # match date filter
         if date_search:
             match_qs = Match.objects.filter(venue=date_search)
         # user input page number, default as page 1
