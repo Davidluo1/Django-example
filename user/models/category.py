@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Category(models.Model):
     """category"""
     user = models.ForeignKey("user.User", models.DO_NOTHING)
