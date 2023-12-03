@@ -1,6 +1,5 @@
 from django.db import models
 
-
 class Product(models.Model):
     """product"""
     user = models.ForeignKey("user.User", models.DO_NOTHING)
